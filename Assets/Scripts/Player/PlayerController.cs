@@ -49,17 +49,20 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //lock the cursor to the center of the screen
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
         MovePlayer();
-        if (lookInput != Vector2.zero)
-        {
-            RotatePlayer();            
-        }
+        RotatePlayer();           
+    }
+
+    void FixedUpdate()
+    {
+        DetectItem();
     }
 
     private void MovePlayer()
@@ -77,7 +80,7 @@ public class PlayerController : MonoBehaviour
             inputDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
         }
 
-        characterController.Move(inputDirection.normalized * (moveSpeed * Time.deltaTime));
+        characterController.Move(inputDirection.normalized * (moveSpeed * Time.deltaTime) + new Vector3(0.0f, -9.81f * Time.deltaTime, 0.0f));
     }
 
     private void RotatePlayer()
@@ -98,6 +101,27 @@ public class PlayerController : MonoBehaviour
 		if (lfAngle > 360f) lfAngle -= 360f;
 		return Mathf.Clamp(lfAngle, -90.0f, 90.0f);
 	}
+
+    private void DetectItem()
+    {
+        //bit shift layer 7 (Interactable)
+        int layerMask = 1 << 7;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward), out hit, 2.0f, layerMask))
+        {
+            //enable the ability to pick up item, notify the user they can pick up this item.
+            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit, distance = " + hit.distance);
+        }
+        else
+        {
+            //disable the ability to pick up item. Turn off the notice to pick up the item.
+            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward) * 2, Color.white);
+            Debug.Log("Did not Hit");
+        }
+    }
 
     private void OnMovementInput(InputAction.CallbackContext context)
     {
