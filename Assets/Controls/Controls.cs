@@ -46,16 +46,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Pick Up"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""ec10ec37-8fb0-4598-979e-e95b5ab4afef"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dream Weaver"",
+                    ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""886fd91c-dc85-4a8c-bcc3-9a36ba7f596b"",
                     ""expectedControlType"": ""Button"",
@@ -64,7 +64,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dream Web"",
+                    ""name"": ""Absorb"",
                     ""type"": ""Button"",
                     ""id"": ""044d67a9-e92b-4be2-8cb7-b501ec687e13"",
                     ""expectedControlType"": ""Button"",
@@ -80,6 +80,42 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InventoryMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""1bfb4764-5cb0-41dc-bbd7-78867a9c7fb2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quick Save"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e18b768-ac4a-4f9d-822f-16305e121bde"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quick Load"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee57a105-4052-4eba-8610-8f3b345c7453"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MainMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""3dc59d61-e4f7-4da7-ab0b-760d7853dc01"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -178,7 +214,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Pick Up"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -189,7 +225,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Dream Weaver"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -200,7 +236,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Dream Weaver"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -211,18 +247,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Pick Up"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""c200ec83-11c0-4fc4-8596-8854e5376d9c"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Dream Web"",
+                    ""action"": ""Absorb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -233,7 +269,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Dream Web"",
+                    ""action"": ""Absorb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -280,6 +316,328 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Scroll Items"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f707bbd-319d-410b-9963-75501cb86b65"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""InventoryMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b235d550-4bff-44b7-8d79-f28efc0dbb87"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""InventoryMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65e767f1-d3e9-4d60-9896-e338e73c9883"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Quick Save"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3f9027e-074e-47dc-b5d8-1eb4dcc42eda"",
+                    ""path"": ""<Keyboard>/f9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Quick Load"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78527b8b-c2cf-4265-8189-9b6f2f3a7503"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""80618617-9af2-4442-90f8-82d8ef9b9500"",
+            ""actions"": [
+                {
+                    ""name"": ""Menu Navigate"",
+                    ""type"": ""Value"",
+                    ""id"": ""9c1d4320-274c-4398-b401-0dae636cd992"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InventoryMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fff2573-2b9d-44ba-a6ad-fb844a513980"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""c1d4de32-b650-4ec0-8df0-20a14cd7e78e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""b08385e1-344d-4085-bf66-35fc90dd8616"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""083bf323-6fec-43c0-989f-01cab7ad11e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseItemLook"",
+                    ""type"": ""Value"",
+                    ""id"": ""d5cb69fa-8654-465c-b1a3-f5109a139af5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""04b9e2d5-2bfc-42bc-a480-8edbe621f737"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""d80785ad-7991-4a5a-a99a-5de44dd5facd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector Keyboard"",
+                    ""id"": ""a380a67a-9cf1-4f68-b438-58cffb5eec0d"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""85c3f62d-1f33-4cee-b80a-4c27ca0b8859"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""2686e2f7-4c52-4b19-90f5-1b16982207e1"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""6f3f6a7b-3412-4679-8530-c7d43c41627e"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""81821552-d9d6-4df4-ac63-fb1044f38947"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05f20d03-2ea2-4297-a75e-e232850471e7"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone,InvertVector2(invertX=false)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Menu Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc13369f-6c15-4904-99cd-e5814c60c8ab"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""712efb2c-1c0f-4f36-b909-cc82b5d52902"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e48c88a5-1ae6-49e8-a15a-cb3f554bb8c0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1acc667-0d00-4e5f-a2b9-6813791f167d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d670718-62f4-4b5f-bb27-87af55d7da90"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.5,y=0.5),StickDeadzone"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Item Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a948e6b-596e-42f1-ac3f-183fd3208e5a"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""MouseItemLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6f19adc-03f4-4471-b885-1d2c972ed9ef"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""feea45cb-1cd5-4422-a0ab-11253887af3a"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""InventoryMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92dab478-333b-4998-8e7f-576a80059039"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""InventoryMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99e12ff3-690b-491d-b267-cc179d14cf8d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""NextTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6a96ee1-5269-4858-a4bd-78c9a7a4c128"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -328,10 +686,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_PlayerMovement = m_Player.FindAction("Player Movement", throwIfNotFound: true);
         m_Player_PlayerLook = m_Player.FindAction("Player Look", throwIfNotFound: true);
-        m_Player_PickUp = m_Player.FindAction("Pick Up", throwIfNotFound: true);
-        m_Player_DreamWeaver = m_Player.FindAction("Dream Weaver", throwIfNotFound: true);
-        m_Player_DreamWeb = m_Player.FindAction("Dream Web", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_Absorb = m_Player.FindAction("Absorb", throwIfNotFound: true);
         m_Player_ScrollItems = m_Player.FindAction("Scroll Items", throwIfNotFound: true);
+        m_Player_InventoryMenu = m_Player.FindAction("InventoryMenu", throwIfNotFound: true);
+        m_Player_QuickSave = m_Player.FindAction("Quick Save", throwIfNotFound: true);
+        m_Player_QuickLoad = m_Player.FindAction("Quick Load", throwIfNotFound: true);
+        m_Player_MainMenu = m_Player.FindAction("MainMenu", throwIfNotFound: true);
+        // Menu
+        m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Menu_MenuNavigate = m_Menu.FindAction("Menu Navigate", throwIfNotFound: true);
+        m_Menu_InventoryMenu = m_Menu.FindAction("InventoryMenu", throwIfNotFound: true);
+        m_Menu_ItemLook = m_Menu.FindAction("Item Look", throwIfNotFound: true);
+        m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
+        m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
+        m_Menu_MouseItemLook = m_Menu.FindAction("MouseItemLook", throwIfNotFound: true);
+        m_Menu_LeftClick = m_Menu.FindAction("LeftClick", throwIfNotFound: true);
+        m_Menu_NextTab = m_Menu.FindAction("NextTab", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -393,20 +765,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_PlayerMovement;
     private readonly InputAction m_Player_PlayerLook;
-    private readonly InputAction m_Player_PickUp;
-    private readonly InputAction m_Player_DreamWeaver;
-    private readonly InputAction m_Player_DreamWeb;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_Absorb;
     private readonly InputAction m_Player_ScrollItems;
+    private readonly InputAction m_Player_InventoryMenu;
+    private readonly InputAction m_Player_QuickSave;
+    private readonly InputAction m_Player_QuickLoad;
+    private readonly InputAction m_Player_MainMenu;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlayerMovement => m_Wrapper.m_Player_PlayerMovement;
         public InputAction @PlayerLook => m_Wrapper.m_Player_PlayerLook;
-        public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
-        public InputAction @DreamWeaver => m_Wrapper.m_Player_DreamWeaver;
-        public InputAction @DreamWeb => m_Wrapper.m_Player_DreamWeb;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @Absorb => m_Wrapper.m_Player_Absorb;
         public InputAction @ScrollItems => m_Wrapper.m_Player_ScrollItems;
+        public InputAction @InventoryMenu => m_Wrapper.m_Player_InventoryMenu;
+        public InputAction @QuickSave => m_Wrapper.m_Player_QuickSave;
+        public InputAction @QuickLoad => m_Wrapper.m_Player_QuickLoad;
+        public InputAction @MainMenu => m_Wrapper.m_Player_MainMenu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -422,18 +802,30 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @PlayerLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayerLook;
                 @PlayerLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayerLook;
                 @PlayerLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayerLook;
-                @PickUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
-                @PickUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
-                @PickUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
-                @DreamWeaver.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeaver;
-                @DreamWeaver.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeaver;
-                @DreamWeaver.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeaver;
-                @DreamWeb.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeb;
-                @DreamWeb.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeb;
-                @DreamWeb.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDreamWeb;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Absorb.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbsorb;
+                @Absorb.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbsorb;
+                @Absorb.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbsorb;
                 @ScrollItems.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollItems;
                 @ScrollItems.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollItems;
                 @ScrollItems.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollItems;
+                @InventoryMenu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryMenu;
+                @InventoryMenu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryMenu;
+                @InventoryMenu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryMenu;
+                @QuickSave.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickSave;
+                @QuickSave.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickSave;
+                @QuickSave.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickSave;
+                @QuickLoad.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickLoad;
+                @QuickLoad.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickLoad;
+                @QuickLoad.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuickLoad;
+                @MainMenu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMainMenu;
+                @MainMenu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMainMenu;
+                @MainMenu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMainMenu;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -444,22 +836,123 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @PlayerLook.started += instance.OnPlayerLook;
                 @PlayerLook.performed += instance.OnPlayerLook;
                 @PlayerLook.canceled += instance.OnPlayerLook;
-                @PickUp.started += instance.OnPickUp;
-                @PickUp.performed += instance.OnPickUp;
-                @PickUp.canceled += instance.OnPickUp;
-                @DreamWeaver.started += instance.OnDreamWeaver;
-                @DreamWeaver.performed += instance.OnDreamWeaver;
-                @DreamWeaver.canceled += instance.OnDreamWeaver;
-                @DreamWeb.started += instance.OnDreamWeb;
-                @DreamWeb.performed += instance.OnDreamWeb;
-                @DreamWeb.canceled += instance.OnDreamWeb;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Absorb.started += instance.OnAbsorb;
+                @Absorb.performed += instance.OnAbsorb;
+                @Absorb.canceled += instance.OnAbsorb;
                 @ScrollItems.started += instance.OnScrollItems;
                 @ScrollItems.performed += instance.OnScrollItems;
                 @ScrollItems.canceled += instance.OnScrollItems;
+                @InventoryMenu.started += instance.OnInventoryMenu;
+                @InventoryMenu.performed += instance.OnInventoryMenu;
+                @InventoryMenu.canceled += instance.OnInventoryMenu;
+                @QuickSave.started += instance.OnQuickSave;
+                @QuickSave.performed += instance.OnQuickSave;
+                @QuickSave.canceled += instance.OnQuickSave;
+                @QuickLoad.started += instance.OnQuickLoad;
+                @QuickLoad.performed += instance.OnQuickLoad;
+                @QuickLoad.canceled += instance.OnQuickLoad;
+                @MainMenu.started += instance.OnMainMenu;
+                @MainMenu.performed += instance.OnMainMenu;
+                @MainMenu.canceled += instance.OnMainMenu;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Menu
+    private readonly InputActionMap m_Menu;
+    private IMenuActions m_MenuActionsCallbackInterface;
+    private readonly InputAction m_Menu_MenuNavigate;
+    private readonly InputAction m_Menu_InventoryMenu;
+    private readonly InputAction m_Menu_ItemLook;
+    private readonly InputAction m_Menu_Select;
+    private readonly InputAction m_Menu_Back;
+    private readonly InputAction m_Menu_MouseItemLook;
+    private readonly InputAction m_Menu_LeftClick;
+    private readonly InputAction m_Menu_NextTab;
+    public struct MenuActions
+    {
+        private @Controls m_Wrapper;
+        public MenuActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MenuNavigate => m_Wrapper.m_Menu_MenuNavigate;
+        public InputAction @InventoryMenu => m_Wrapper.m_Menu_InventoryMenu;
+        public InputAction @ItemLook => m_Wrapper.m_Menu_ItemLook;
+        public InputAction @Select => m_Wrapper.m_Menu_Select;
+        public InputAction @Back => m_Wrapper.m_Menu_Back;
+        public InputAction @MouseItemLook => m_Wrapper.m_Menu_MouseItemLook;
+        public InputAction @LeftClick => m_Wrapper.m_Menu_LeftClick;
+        public InputAction @NextTab => m_Wrapper.m_Menu_NextTab;
+        public InputActionMap Get() { return m_Wrapper.m_Menu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMenuActions instance)
+        {
+            if (m_Wrapper.m_MenuActionsCallbackInterface != null)
+            {
+                @MenuNavigate.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuNavigate;
+                @MenuNavigate.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuNavigate;
+                @MenuNavigate.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuNavigate;
+                @InventoryMenu.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnInventoryMenu;
+                @InventoryMenu.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnInventoryMenu;
+                @InventoryMenu.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnInventoryMenu;
+                @ItemLook.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnItemLook;
+                @ItemLook.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnItemLook;
+                @ItemLook.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnItemLook;
+                @Select.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnSelect;
+                @Back.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnBack;
+                @MouseItemLook.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMouseItemLook;
+                @MouseItemLook.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMouseItemLook;
+                @MouseItemLook.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMouseItemLook;
+                @LeftClick.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnLeftClick;
+                @LeftClick.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnLeftClick;
+                @LeftClick.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnLeftClick;
+                @NextTab.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnNextTab;
+                @NextTab.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnNextTab;
+                @NextTab.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnNextTab;
+            }
+            m_Wrapper.m_MenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MenuNavigate.started += instance.OnMenuNavigate;
+                @MenuNavigate.performed += instance.OnMenuNavigate;
+                @MenuNavigate.canceled += instance.OnMenuNavigate;
+                @InventoryMenu.started += instance.OnInventoryMenu;
+                @InventoryMenu.performed += instance.OnInventoryMenu;
+                @InventoryMenu.canceled += instance.OnInventoryMenu;
+                @ItemLook.started += instance.OnItemLook;
+                @ItemLook.performed += instance.OnItemLook;
+                @ItemLook.canceled += instance.OnItemLook;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+                @MouseItemLook.started += instance.OnMouseItemLook;
+                @MouseItemLook.performed += instance.OnMouseItemLook;
+                @MouseItemLook.canceled += instance.OnMouseItemLook;
+                @LeftClick.started += instance.OnLeftClick;
+                @LeftClick.performed += instance.OnLeftClick;
+                @LeftClick.canceled += instance.OnLeftClick;
+                @NextTab.started += instance.OnNextTab;
+                @NextTab.performed += instance.OnNextTab;
+                @NextTab.canceled += instance.OnNextTab;
+            }
+        }
+    }
+    public MenuActions @Menu => new MenuActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -482,9 +975,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnPlayerMovement(InputAction.CallbackContext context);
         void OnPlayerLook(InputAction.CallbackContext context);
-        void OnPickUp(InputAction.CallbackContext context);
-        void OnDreamWeaver(InputAction.CallbackContext context);
-        void OnDreamWeb(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnAbsorb(InputAction.CallbackContext context);
         void OnScrollItems(InputAction.CallbackContext context);
+        void OnInventoryMenu(InputAction.CallbackContext context);
+        void OnQuickSave(InputAction.CallbackContext context);
+        void OnQuickLoad(InputAction.CallbackContext context);
+        void OnMainMenu(InputAction.CallbackContext context);
+    }
+    public interface IMenuActions
+    {
+        void OnMenuNavigate(InputAction.CallbackContext context);
+        void OnInventoryMenu(InputAction.CallbackContext context);
+        void OnItemLook(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
+        void OnMouseItemLook(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
+        void OnNextTab(InputAction.CallbackContext context);
     }
 }

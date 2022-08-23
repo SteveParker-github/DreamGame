@@ -2,41 +2,130 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Player")]
-    [Tooltip("walking Speed of Player")]
-    [SerializeField]
-    private float WALKSPEED = 4.0f;
-    [Tooltip("Rotation speed of camera pitch")]
-    [SerializeField]
-    private float VERTICALSPEED = 1.0f;
-    [Tooltip("Rotation speed of player")]
-    [SerializeField]
-    private float HORIZONTALSPEED = 1.0f;
-
-    private Controls controls;
+    [Header("UI")]
+    [Tooltip("GameObject for info UI")]
+    [SerializeField] private GameObject infoGameObject;
+    private GameManager gameManager;
+    private TextMeshProUGUI infoText;
+    private UIManager uIManager;
     private CharacterController characterController;
+    private PlayerBaseState currentState;
+    private PlayerStateFactory states;
 
     private GameObject mainCamera;
-    private float cameraTargetPitch;
 
+    #region controls
+    private Controls controls;
     private Vector2 moveInput;
     private Vector2 lookInput;
+    private bool isInteractInput;
+    private bool isShootInput;
+    private bool isAbsorbInput;
+    private bool isInventoryMenuInput;
+    private bool isQuickSave;
+    private bool isQuickLoad;
+    private bool isMainMenuInput;
 
-    private float moveSpeed;
+    public Vector2 MoveInput { get => moveInput; }
+    public Vector2 LookInput { get => lookInput; }
+    public bool IsInteractInput { get => isInteractInput; set => isInteractInput = value; }
+    public bool IsShootInput { get => isShootInput; set => isShootInput = value; }
+    public bool IsAbsorbInput { get => isAbsorbInput; set => isAbsorbInput = value; }
+    public bool IsInventoryMenuInput { get => isInventoryMenuInput; set => isInventoryMenuInput = value; }
+    public bool IsQuickSave { get => isQuickSave; set => isQuickSave = value; }
+    public bool IsQuickLoad { get => isQuickLoad; set => isQuickLoad = value; }
+    public bool IsMainMenuInput { get => isMainMenuInput; set => isMainMenuInput = value; }
+    #endregion
+
+    private bool isTalkState;
+    private Vector3 targetPosition;
+    private NPCController selectedNPC;
+    private int optionLocation;
+    private string message;
+    private bool isPaused;
+
+    private InventoryManager inventoryManager;
+    private QuestManager questManager;
+
+    private float suspicionHealth = 0;
+    private float damageHealth = 0;
+    private int dialogueFails = 0;
+    private float maxSuspicionHealth = 400;
+
+    public TextMeshProUGUI InfoText { get => infoText; }
+    public GameManager GameManager { get => gameManager; }
+    public UIManager UIManager { get => uIManager; }
+    public CharacterController CharacterController { get => characterController; }
+    public PlayerBaseState CurrentState { get => currentState; set => currentState = value; }
+    public GameObject MainCamera { get => mainCamera; }
+    public bool IsTalkState { get => isTalkState; set => isTalkState = value; }
+    public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
+    public NPCController SelectedNPC { get => selectedNPC; }
+    public int OptionLocation { get => optionLocation; set => optionLocation = value; }
+    public string Message { get => message; set => message = value; }
+    public bool IsPaused { get => isPaused; set => isPaused = value; }
+    public InventoryManager InventoryManager { get => inventoryManager; }
+    public QuestManager QuestManager { get => questManager; }
+    public float SuspicionHealth { get => suspicionHealth; }
+    public int DialogueFails { get => dialogueFails; set => dialogueFails = value; }
 
     void Awake()
     {
-        controls = new Controls();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
         characterController = GetComponent<CharacterController>();
 
+        uIManager = GameObject.Find("HUD").GetComponent<UIManager>();
+        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+
         // get a reference to our main camera
-		if (mainCamera == null)
-		{
-			mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-		}
+        if (mainCamera == null)
+        {
+            mainCamera = transform.Find("Main Camera").gameObject;
+        }
+
+        infoText = infoGameObject.GetComponent<TextMeshProUGUI>();
+
+        states = new PlayerStateFactory(this);
+        currentState = states.PlayerMainMenuState();
+
+        SetupControls();
+    }
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        currentState.EnterState();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        currentState.UpdateState();
+
+        if (isPaused) return;
+
+        float reduceDamageHealth = (Time.deltaTime * 2.0f);
+        damageHealth -= Mathf.Min(damageHealth, reduceDamageHealth);
+        suspicionHealth = damageHealth + dialogueFails * 100;
+    }
+
+    public void Hit()
+    {
+        damageHealth += 25;
+        suspicionHealth = damageHealth + dialogueFails * 100;
+    }
+
+    #region  Controller
+    private void SetupControls()
+    {
+        controls = new Controls();
 
         controls.Player.PlayerMovement.started += OnMovementInput;
         controls.Player.PlayerMovement.canceled += OnMovementInput;
@@ -44,83 +133,20 @@ public class PlayerController : MonoBehaviour
         controls.Player.PlayerLook.started += OnLookInput;
         controls.Player.PlayerLook.canceled += OnLookInput;
         controls.Player.PlayerLook.performed += OnLookInput;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //lock the cursor to the center of the screen
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        MovePlayer();
-        RotatePlayer();           
-    }
-
-    void FixedUpdate()
-    {
-        DetectItem();
-    }
-
-    private void MovePlayer()
-    {
-        float targetSpeed = WALKSPEED;
-
-        if (moveInput == Vector2.zero) targetSpeed = 0.0f;
-
-        moveSpeed = targetSpeed * moveInput.magnitude;
-
-        Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
-
-        if (moveInput != Vector2.zero)
-        {
-            inputDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
-        }
-
-        characterController.Move(inputDirection.normalized * (moveSpeed * Time.deltaTime) + new Vector3(0.0f, -9.81f * Time.deltaTime, 0.0f));
-    }
-
-    private void RotatePlayer()
-    {
-		cameraTargetPitch += lookInput.y * VERTICALSPEED;
-
-		cameraTargetPitch = ClampAngle(cameraTargetPitch);
-
-        mainCamera.transform.localRotation = Quaternion.Euler(cameraTargetPitch, 0.0f, 0.0f);
-
-        transform.Rotate(Vector3.up * lookInput.x * HORIZONTALSPEED);
-    }
-
-	// clamp our pitch rotation
-    private float ClampAngle(float lfAngle)
-	{
-		if (lfAngle < -360f) lfAngle += 360f;
-		if (lfAngle > 360f) lfAngle -= 360f;
-		return Mathf.Clamp(lfAngle, -90.0f, 90.0f);
-	}
-
-    private void DetectItem()
-    {
-        //bit shift layer 7 (Interactable)
-        int layerMask = 1 << 7;
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward), out hit, 2.0f, layerMask))
-        {
-            //enable the ability to pick up item, notify the user they can pick up this item.
-            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit, distance = " + hit.distance);
-        }
-        else
-        {
-            //disable the ability to pick up item. Turn off the notice to pick up the item.
-            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.TransformDirection(Vector3.forward) * 2, Color.white);
-            Debug.Log("Did not Hit");
-        }
+        controls.Player.Interact.started += OnInteractButton;
+        controls.Player.Interact.canceled += OnInteractButton;
+        controls.Player.Shoot.started += OnShootButton;
+        controls.Player.Shoot.canceled += OnShootButton;
+        controls.Player.Absorb.started += OnAbsorbButtton;
+        controls.Player.Absorb.canceled += OnAbsorbButtton;
+        controls.Player.InventoryMenu.started += OnInventoryMenuButton;
+        controls.Player.InventoryMenu.canceled += OnInventoryMenuButton;
+        controls.Player.QuickSave.started += OnQuickSaveButton;
+        controls.Player.QuickSave.canceled += OnQuickSaveButton;
+        controls.Player.QuickLoad.started += OnQuickLoadButton;
+        controls.Player.QuickLoad.canceled += OnQuickLoadButton;
+        controls.Player.MainMenu.started += OnMainMenuButton;
+        controls.Player.MainMenu.canceled += OnMainMenuButton;
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -133,7 +159,42 @@ public class PlayerController : MonoBehaviour
         lookInput = context.ReadValue<Vector2>();
     }
 
-        private void OnEnable()
+    private void OnInteractButton(InputAction.CallbackContext context)
+    {
+        isInteractInput = context.ReadValueAsButton();
+    }
+
+    private void OnShootButton(InputAction.CallbackContext context)
+    {
+        isShootInput = context.ReadValueAsButton();
+    }
+
+    private void OnAbsorbButtton(InputAction.CallbackContext context)
+    {
+        isAbsorbInput = context.ReadValueAsButton();
+    }
+
+    private void OnInventoryMenuButton(InputAction.CallbackContext context)
+    {
+        isInventoryMenuInput = context.ReadValueAsButton();
+    }
+
+    private void OnQuickSaveButton(InputAction.CallbackContext context)
+    {
+        isQuickSave = context.ReadValueAsButton();
+    }
+
+    private void OnQuickLoadButton(InputAction.CallbackContext context)
+    {
+        isQuickLoad = context.ReadValueAsButton();
+    }
+
+    private void OnMainMenuButton(InputAction.CallbackContext context)
+    {
+        isMainMenuInput = context.ReadValueAsButton();
+    }
+
+    private void OnEnable()
     {
         controls.Player.Enable();
     }
@@ -142,4 +203,6 @@ public class PlayerController : MonoBehaviour
     {
         controls.Player.Disable();
     }
+
+    #endregion
 }
