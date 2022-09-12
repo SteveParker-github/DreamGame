@@ -6,4 +6,5 @@ public class SaveFile
     public DialogueSave dialogue;
     public string location;
     public PlayerSave player;
+    public Enemies enemies;
 }

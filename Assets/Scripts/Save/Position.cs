@@ -18,4 +18,11 @@ public class Position
     {
         return new Vector3(x, y, z);
     }
+
+    public void ToFloat(Vector3 position)
+    {
+        x = position.x;
+        y = position.y + 0.1f;
+        z = position.z;
+    }
 }

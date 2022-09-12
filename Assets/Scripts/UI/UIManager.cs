@@ -8,8 +8,8 @@ public class UIManager : MonoBehaviour
 {
     [Header("PreFabs")]
     [Tooltip("Game object for option box")]
-    [SerializeField]
-    private GameObject optionBox;
+    [SerializeField] private GameObject optionBox;
+    [SerializeField] private List<Texture> eyes;
     private GameObject crosshair;
     private GameObject captionPanel;
     private GameObject caption;
@@ -22,6 +22,9 @@ public class UIManager : MonoBehaviour
     private List<GameObject> dialogueBoxes;
     private int maxOptions;
     private bool isEnd;
+    private PlayerController playerController;
+    private GameObject suspicionMeter;
+    private float currentEyeLevel;
     public int MaxOptions { get { return maxOptions; } }
 
     // Start is called before the first frame update
@@ -35,18 +38,31 @@ public class UIManager : MonoBehaviour
         dialogueContent = dialogueBox.transform.Find("Viewport").Find("Content").gameObject;
         dialogueContentRT = dialogueContent.GetComponent<RectTransform>();
         dialogueScrollBar = dialogueBox.transform.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
+        suspicionMeter = transform.Find("SuspicionMeter").gameObject;
         dialogueGameObjects = new List<GameObject>();
         dialogueBoxes = new List<GameObject>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        currentEyeLevel = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!suspicionMeter.activeSelf) return;
+
+        int eyeLevel = Mathf.FloorToInt(playerController.SuspicionHealth / 100);
+        eyeLevel = Mathf.Clamp(eyeLevel, 0, 3);
+        
+        if (eyeLevel == currentEyeLevel) return;
+
+        suspicionMeter.GetComponent<RawImage>().texture = eyes[eyeLevel];
+        currentEyeLevel = eyeLevel;
     }
 
     public void ToggleCrosshair()
     {
         crosshair.SetActive(!crosshair.activeSelf);
+        suspicionMeter.SetActive(!suspicionMeter.activeSelf);
     }
 
     public void ToggleCaption()

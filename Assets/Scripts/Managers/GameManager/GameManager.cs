@@ -11,12 +11,15 @@ public class GameManager : MonoBehaviour
     private InventoryManager inventoryManager;
     private DialogueManager dialogueManager;
     private QuestManager questManager;
+    private EnemiesManager enemiesManager;
     private GameObject player;
     private GameObject screenShotCamera;
     private PlayerController playerController;
     private GameObject loadingCanvas;
     private LoadingBar loadingBar;
     private PlayerSave playerSave;
+    private bool isPaused;
+    public bool IsPaused { get => isPaused; set => isPaused = value; }
 
     private void Start()
     {
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
         dialogueManager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
         questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
+        enemiesManager = GameObject.Find("EnemiesManager").GetComponent<EnemiesManager>();
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
         screenShotCamera = GameObject.Find("ScreenShotCamera");
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
         saveFile.quests = questManager.GetFullQuestList();
         saveFile.inventory = inventoryManager.GetItemList();
         saveFile.dialogue = dialogueManager.GetDialogue();
+        saveFile.enemies = enemiesManager.GetEnemiesList();
         saveFile.player = new PlayerSave(player.transform.position, player.transform.rotation);
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
@@ -93,6 +98,7 @@ public class GameManager : MonoBehaviour
         questManager.LoadQuests(saveFile.quests);
         inventoryManager.LoadItems(saveFile.inventory);
         dialogueManager.LoadDialogues(saveFile.dialogue);
+        enemiesManager.LoadEnemies(saveFile.enemies);
         playerSave = saveFile.player;
 
         for (int i = 0; i < SceneManager.sceneCount; i++)

@@ -19,7 +19,8 @@ public class ItemSpawner : MonoBehaviour
     {
         if (!hasSpawned && questManager.QuestExist("Fetch Hall Pass"))
         {
-            Instantiate(hallPassPrefab);
+            GameObject itemObject = Instantiate(hallPassPrefab);
+            itemObject.name = itemObject.GetComponent<Clue>().ObjectName;
             hasSpawned = true;
         }
     }

@@ -42,6 +42,12 @@ public class EnemyChaseState : EnemyBaseState
 
     public override void CheckSwitchState()
     {
+        if (ctx.IsStagger)
+        {
+            SwitchState(factory.EnemyStaggerState());
+            return;
+        }
+
         if (ctx.IsStunned)
         {
             SwitchState(factory.EnemyStunState());
@@ -59,13 +65,11 @@ public class EnemyChaseState : EnemyBaseState
     {
         lastLocation = ctx.PlayerLocation.position;
 
-        if (Vector3.Distance(ctx.transform.position, ctx.PlayerLocation.position) < 2.0f)
+        if (ctx.Agent.remainingDistance < 2.5f)
         {
-            ctx.Agent.destination = ctx.transform.position;
             if (HitPlayer()) return;
         }
-
-        ctx.Agent.destination = lastLocation;
+        ctx.Agent.SetDestination(lastLocation);
     }
 
     private void GoLastLocation()

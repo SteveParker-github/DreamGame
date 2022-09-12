@@ -11,6 +11,7 @@ public class PlayerMenuState : PlayerBaseState
     public override void EnterState()
     {
         ctx.IsPaused = true;
+        ctx.GameManager.IsPaused = true;
         ctx.InventoryManager.DisplayItems();
     }
     public override void UpdateState()
@@ -20,6 +21,7 @@ public class PlayerMenuState : PlayerBaseState
     public override void ExitState()
     {
         ctx.IsPaused = false;
+        ctx.GameManager.IsPaused = false;
     }
     public override void CheckSwitchState()
     {

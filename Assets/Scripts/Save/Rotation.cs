@@ -20,4 +20,12 @@ public class Rotation
     {
         return new Quaternion(x, y, z, w);
     }
+
+    public void ToFloat(Quaternion rotation)
+    {
+        w = rotation.w;
+        x = rotation.x;
+        y = rotation.y;
+        z = rotation.z;
+    }
 }

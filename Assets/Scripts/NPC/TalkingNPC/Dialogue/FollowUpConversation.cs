@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FollowUpConversation : Conversation
 {
-    private string NPCName;
-    private string conversation;
-    private DialogueManager dialogueManager;
+    protected string NPCName;
+    protected string conversation;
+    protected DialogueManager dialogueManager;
 
     public FollowUpConversation(string option, string respond, bool isEnd, string NPCName, string conversation, DialogueManager dialogueManager)
     : base(option, respond, isEnd)

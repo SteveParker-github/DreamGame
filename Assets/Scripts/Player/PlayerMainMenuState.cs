@@ -13,6 +13,7 @@ public class PlayerMainMenuState : PlayerBaseState
     public override void EnterState()
     {
         ctx.IsPaused = true;
+        ctx.GameManager.IsPaused = true;
         if (!SceneManager.GetSceneByName("MainMenuScene").isLoaded)
         {
             SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Additive);
@@ -30,6 +31,8 @@ public class PlayerMainMenuState : PlayerBaseState
     public override void ExitState()
     {
         ctx.IsPaused = false;
+        ctx.GameManager.IsPaused = false;
+        
         if (SceneManager.GetSceneByName("MainMenuScene").isLoaded)
         {
             SceneManager.UnloadSceneAsync("MainMenuScene");

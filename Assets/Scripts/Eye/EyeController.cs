@@ -24,7 +24,7 @@ public class EyeController : MonoBehaviour
         suspicionHealth = playerController.SuspicionHealth;
 
         int angle = Mathf.FloorToInt(suspicionHealth / 100);
-        print(angle);
+        angle = Mathf.Clamp(angle, 0, 4);
         eyelidTop.localRotation = Quaternion.Euler(-90 + 10 * angle, 0, 0);
         eyelidBottom.localRotation = Quaternion.Euler(-90 - 5 * angle, 0, 0);
     }

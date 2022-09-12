@@ -25,16 +25,26 @@ public class EnemyController : MonoBehaviour, IHitable
     private bool playerSeen;
     private PlayerController playerController;
     private Transform playerLocation;
+    private EnemyManager enemyManager;
+    private bool hadPaused;
+    private Vector3 targetLocation;
+    private Vector3 currentVelocity;
 
     public List<Vector3> PatrolPoints { get => patrolPoints; }
     public EnemyBaseState CurrentState { get => currentState; set => currentState = value; }
+    public float AbsorbHealth { get => absorbHealth; }
+    public float StunHealth { get => stunHealth; }
     public bool IsStunned { get => isStunned; }
+    public bool BeenStaggered { get => beenStaggered; }
     public bool IsStagger { get => isStagger; set => isStagger = value; }
     public bool WasPatrol { get => wasPatrol; set => wasPatrol = value; }
     public NavMeshAgent Agent { get => agent; }
     public bool PlayerSeen { get => playerSeen; }
     public PlayerController PlayerController { get => playerController; }
     public Transform PlayerLocation { get => playerLocation; }
+    public bool HadPaused { get => hadPaused; set => hadPaused = value; }
+    public Vector3 TargetLocation { get => targetLocation; set => targetLocation = value; }
+    public Vector3 CurrentVelocity { get => currentVelocity; set => currentVelocity = value; }
 
     private void Awake()
     {
@@ -48,6 +58,7 @@ public class EnemyController : MonoBehaviour, IHitable
         absorbHealth = MAXABSORBHEALTH;
         stunHealth = MAXSTUNHEALTH;
         agent = GetComponent<NavMeshAgent>();
+        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
 
         states = new EnemyStateFactory(this);
         currentState = states.EnemyPatrolState();
@@ -56,6 +67,16 @@ public class EnemyController : MonoBehaviour, IHitable
 
     private void Update()
     {
+        currentVelocity = agent.velocity;
+
+        if (playerController.GameManager.IsPaused)
+        {
+            hadPaused = true;
+            agent.enabled = false;
+            return;
+        }
+
+        agent.enabled = true;
         animator.SetBool(isMovingHash, agent.velocity.magnitude > 0.1f);
         currentState.UpdateState();
     }
@@ -78,6 +99,7 @@ public class EnemyController : MonoBehaviour, IHitable
 
         if (absorbHealth <= 0)
         {
+            enemyManager.RemoveEnemy(this.gameObject.name);
             Destroy(gameObject);
         }
         return true;
@@ -87,7 +109,7 @@ public class EnemyController : MonoBehaviour, IHitable
     {
         stunHealth -= damage;
 
-        if (!beenStaggered && stunHealth <= 60)
+        if (!beenStaggered)
         {
             isStagger = true;
             beenStaggered = true;
@@ -129,5 +151,17 @@ public class EnemyController : MonoBehaviour, IHitable
             Debug.DrawRay(eyeLevel.transform.position, directionToTarget * distanceToTarget, Color.red);
             playerSeen = true;
         }
+    }
+
+    public void SetEnemy(Enemy enemy)
+    {
+        currentVelocity = enemy.velocity.GetVector();
+        targetLocation = enemy.targetLocation.GetVector();
+        absorbHealth = enemy.absorbHealth;
+        stunHealth = enemy.stunHealth;
+        isStunned = enemy.isStunned;
+        beenStaggered = enemy.beenStaggered;
+        isStagger = enemy.isStagger;
+        hadPaused = true;
     }
 }

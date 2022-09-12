@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5045458318724776937
+--- !u!1 &7012127632803175212
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5045458318724776914}
-  - component: {fileID: 5045458318724776941}
-  - component: {fileID: 5045458318724776940}
-  - component: {fileID: 5045458318724776943}
-  - component: {fileID: 5045458318724776942}
+  - component: {fileID: 7645920583265239446}
+  - component: {fileID: 6752056753846767155}
+  - component: {fileID: 8813800236439878393}
+  - component: {fileID: 6870806377957592235}
+  - component: {fileID: 3095979178608897061}
+  - component: {fileID: 1437800523352641383}
   m_Layer: 7
   m_Name: Hall Pass
-  m_TagString: Clue
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5045458318724776914
+--- !u!4 &7645920583265239446
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5045458318724776937}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.383, y: 2.096, z: -34.146}
-  m_LocalScale: {x: 0.3, y: 0.01, z: 0.1}
+  m_GameObject: {fileID: 7012127632803175212}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -9.571, y: 1.974, z: -34.133}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5045458318724776941
+--- !u!33 &6752056753846767155
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5045458318724776937}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5045458318724776940
+  m_GameObject: {fileID: 7012127632803175212}
+  m_Mesh: {fileID: 8030065089707525876, guid: 9d01d37e4002d3541a841ea49b6953c7, type: 3}
+--- !u!23 &8813800236439878393
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5045458318724776937}
+  m_GameObject: {fileID: 7012127632803175212}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 9a86ca2238c09a84e906bb2f365722e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,26 +86,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5045458318724776943
+--- !u!65 &6870806377957592235
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5045458318724776937}
+  m_GameObject: {fileID: 7012127632803175212}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5045458318724776942
+  m_Size: {x: 0.15839715, y: 0.33588997, z: 0.057887748}
+  m_Center: {x: -0.031963713, y: -0.056936998, z: -0.0031039105}
+--- !u!114 &3095979178608897061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5045458318724776937}
+  m_GameObject: {fileID: 7012127632803175212}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c642e0e0a77ee8c4da1c9ce71fc99a3e, type: 3}
@@ -113,3 +114,17 @@ MonoBehaviour:
   objectName: Hall Pass
   description: Maybe the Hall Monitor would like to see this
   sprite: {fileID: 21300000, guid: c57d873eee2201d45b6584fc5abaad65, type: 3}
+--- !u!114 &1437800523352641383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012127632803175212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8815996ab90dc024d832bd47f5ee9eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoomLevel: -2
+  localRotation: {x: 0, y: 0, z: 180}

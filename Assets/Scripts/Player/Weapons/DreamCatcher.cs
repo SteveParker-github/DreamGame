@@ -16,12 +16,12 @@ public class DreamCatcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        web = transform.Find("Web").gameObject;
-        webMaterial = web.GetComponent<Renderer>().material;
-        materialTypes = new Dictionary<string, Vector4>();
-        materialTypes.Add("default", webMaterial.color);
-        materialTypes.Add("hit", new Vector4(0, 1, 0, 0.53f));
-        materialTypes.Add("block", new Vector4(1, 0, 0, 0.53f));
+        web = transform.GetChild(0).GetChild(0).gameObject;
+        // webMaterial = web.GetComponent<Renderer>().material;
+        // materialTypes = new Dictionary<string, Vector4>();
+        // materialTypes.Add("default", webMaterial.color);
+        // materialTypes.Add("hit", new Vector4(0, 1, 0, 0.53f));
+        // materialTypes.Add("block", new Vector4(1, 0, 0, 0.53f));
         defaultLocalRotation = transform.localRotation;
     }
 
@@ -59,12 +59,12 @@ public class DreamCatcher : MonoBehaviour
 
     public void ChangeColour(string colourType, float remainingAbsorb)
     {
-        Vector4 newColour = materialTypes[colourType];
-        if (colourType == "hit")
-        {
-            newColour.w = 1 - remainingAbsorb * 0.5f;
-        }
+        // Vector4 newColour = materialTypes[colourType];
+        // if (colourType == "hit")
+        // {
+        //     newColour.w = 1 - remainingAbsorb * 0.5f;
+        // }
 
-        webMaterial.color = newColour;
+        // webMaterial.color = newColour;
     }
 }

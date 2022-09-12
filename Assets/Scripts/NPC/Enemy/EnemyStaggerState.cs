@@ -36,6 +36,7 @@ public class EnemyStaggerState : EnemyBaseState
         if (staggerCooldown <= 0.0f)
         {
             ctx.IsStagger = false;
+
             if (ctx.WasPatrol)
             {
                 SwitchState(factory.EnemyPatrolState());

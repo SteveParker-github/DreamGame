@@ -11,7 +11,7 @@ public class PlayerWalkingState : PlayerBaseState
     [Header("Player")]
     [Tooltip("walking Speed of Player")]
     [SerializeField]
-    private const float WALKSPEED = 4.0f;
+    private const float WALKSPEED = 5.0f;
     [Tooltip("Speed of looking around")]
     [SerializeField]
     private const float SENSITIVITY = 1.0f;
@@ -37,7 +37,8 @@ public class PlayerWalkingState : PlayerBaseState
         isAbsorbing = false;
         shootingCooldown = 0;
         savingCooldown = 0;
-        dreamCatcher = GameObject.Find("DreamCatcher").GetComponent<DreamCatcher>();
+        // dreamCatcher = GameObject.Find("DreamCatcher").GetComponent<DreamCatcher>();
+        dreamCatcher = GameObject.FindObjectOfType<DreamCatcher>();
     }
 
     public override void UpdateState()
@@ -115,7 +116,7 @@ public class PlayerWalkingState : PlayerBaseState
     {
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
-        return Mathf.Clamp(lfAngle, -90.0f, 90.0f);
+        return Mathf.Clamp(lfAngle, -80.0f, 80.0f);
     }
 
     private void DetectInteractable()

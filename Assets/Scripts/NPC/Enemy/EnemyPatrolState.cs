@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyPatrolState : EnemyBaseState
 {
     public EnemyPatrolState(EnemyController enemyController, EnemyStateFactory enemyStateFactory)
     : base(enemyController, enemyStateFactory)
     { }
-
-    private Vector3 targetLocation;
 
     public override void EnterState()
     {
@@ -49,12 +48,17 @@ public class EnemyPatrolState : EnemyBaseState
 
     private void Patrol()
     {
-        if (ctx.Agent.remainingDistance < 0.5f) targetLocation = Vector3.zero;
-
-        if (targetLocation == Vector3.zero)
+        if (ctx.HadPaused)
         {
-            targetLocation = ctx.PatrolPoints[Random.Range(0, ctx.PatrolPoints.Count)];
-            ctx.Agent.destination = targetLocation;
+            ctx.Agent.destination = ctx.TargetLocation;
+            ctx.HadPaused = false;
+            return;
+        }
+
+        if (ctx.Agent.remainingDistance <= ctx.Agent.stoppingDistance)
+        {
+            ctx.TargetLocation = ctx.PatrolPoints[Random.Range(0, ctx.PatrolPoints.Count)];
+            ctx.Agent.destination = ctx.TargetLocation;
         }
     }
 }

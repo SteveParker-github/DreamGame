@@ -163,9 +163,11 @@ public class InventoryManager : MonoBehaviour
         items.Add(clue.ObjectName, new Item(clue.ObjectName, clue.Description, itemObject, clue.Sprite));
         itemsHad.Add(clue.ObjectName);
         Transform itemLocation = itemCamera.transform.Find("ItemLocation");
-        itemObject.transform.position = itemLocation.position;
-        itemObject.transform.rotation = itemLocation.rotation;
+        itemObject.transform.SetPositionAndRotation(itemLocation.position, itemLocation.rotation);
         itemObject.transform.SetParent(itemLocation);
+        ItemInfo itemInfo = itemObject.GetComponent<ItemInfo>();
+        itemObject.transform.localPosition = new Vector3(0, 0, itemInfo.zoomLevel);
+        itemObject.transform.localRotation = Quaternion.Euler(itemInfo.localRotation);
         itemObject.SetActive(false);
     }
 
@@ -228,16 +230,25 @@ public class InventoryManager : MonoBehaviour
     public void LoadItems(InventorySave saveFile)
     {
         items = new Dictionary<string, Item>();
+        GameObject itemLocationObject = itemCamera.transform.Find("ItemLocation").gameObject;
+        int childCount = itemLocationObject.transform.childCount;
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Destroy(itemLocationObject.transform.GetChild(i).gameObject);
+        }
 
         foreach (ItemSave item in saveFile.itemsHave)
         {
             GameObject itemObject = Instantiate(Resources.Load<GameObject>("ItemObject/" + item.itemName));
             itemObject.name = item.itemName;
             Destroy(itemObject.GetComponent<Clue>());
-            Transform itemLocation = itemCamera.transform.Find("ItemLocation");
-            itemObject.transform.position = itemLocation.position;
-            itemObject.transform.rotation = itemLocation.rotation;
+            Transform itemLocation = itemLocationObject.transform;
+            itemObject.transform.SetPositionAndRotation(itemLocation.position, itemLocation.rotation);
             itemObject.transform.SetParent(itemLocation);
+            ItemInfo itemInfo = itemObject.GetComponent<ItemInfo>();
+            itemObject.transform.localPosition = new Vector3(0, 0, itemInfo.zoomLevel);
+            itemObject.transform.localRotation = Quaternion.Euler(itemInfo.localRotation);
             itemObject.SetActive(false);
 
             Item newItem = new Item(

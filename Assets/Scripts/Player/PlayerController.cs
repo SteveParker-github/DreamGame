@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour
         // get a reference to our main camera
         if (mainCamera == null)
         {
-            mainCamera = transform.Find("Main Camera").gameObject;
+            mainCamera = GameObject.Find("Player Camera");
         }
 
         infoText = infoGameObject.GetComponent<TextMeshProUGUI>();
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentState.EnterState();
+        // currentState.EnterState();
     }
 
     // Update is called once per frame
@@ -110,6 +111,27 @@ public class PlayerController : MonoBehaviour
         currentState.UpdateState();
 
         if (isPaused) return;
+
+        if (suspicionHealth >= maxSuspicionHealth)
+        {
+            currentState = states.PlayerWalkingState();
+            currentState.EnterState();
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                string sceneName = SceneManager.GetSceneAt(i).name;
+
+                if (sceneName != "GlobalScene" && sceneName != "MainMenuScene")
+                {
+                    SceneManager.UnloadSceneAsync(sceneName);
+                }
+            }
+            SceneManager.LoadScene("TestScene", LoadSceneMode.Additive);
+            transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 0));
+            dialogueFails = 0;
+            damageHealth = 0;
+            suspicionHealth = 0;
+            return;
+        }
 
         float reduceDamageHealth = (Time.deltaTime * 2.0f);
         damageHealth -= Mathf.Min(damageHealth, reduceDamageHealth);

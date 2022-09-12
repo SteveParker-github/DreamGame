@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ReceiveItemConversation : Conversation
 {
-    private (string, string) item;
-    private InventoryManager inventoryManager;
+    protected (string, string) item;
+    protected InventoryManager inventoryManager;
 
     public ReceiveItemConversation(string option, string respond, bool isEnd, (string, string) item, InventoryManager inventoryManager)
     : base(option, respond, isEnd)
@@ -16,7 +16,6 @@ public class ReceiveItemConversation : Conversation
 
     public override string GetRespond()
     {
-        Debug.Log(isRepeat);
         if (isRepeat) return respond;
 
         inventoryManager.AddNewItem(item);

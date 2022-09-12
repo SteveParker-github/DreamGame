@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SuspiciousConversation : Conversation
 {
-    private PlayerController playerController;
+    protected PlayerController playerController;
     public SuspiciousConversation(string option, string respond, bool isEnd, PlayerController playerController)
     : base(option, respond, isEnd)
     {
