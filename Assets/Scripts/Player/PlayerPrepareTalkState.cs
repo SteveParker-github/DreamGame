@@ -9,16 +9,20 @@ public class PlayerPrepareTalkState : PlayerBaseState
     { }
 
     private const float MAXROTATIONSPEED = 1.0f;
-    private bool isStateComplete;
 
     public override void EnterState()
     {
         ctx.OptionLocation = 0;
+        ctx.ReadyToTalk = false;
     }
 
     public override void UpdateState()
     {
-        RotateTowardsNPC();
+        if (!ctx.ReadyToTalk)
+        {
+            RotateTowardsNPC();
+        }
+        
         CheckSwitchState();
     }
 
@@ -28,9 +32,9 @@ public class PlayerPrepareTalkState : PlayerBaseState
 
     public override void CheckSwitchState()
     {
-        if (isStateComplete)
+        if (ctx.ReadyToTalk && ctx.SelectedNPC.ReadyToTalk)
         {
-            SwitchState(factory.PlayerListeningState());
+            SwitchState(factory.PlayerTalkingState());
         }
     }
 
@@ -51,7 +55,7 @@ public class PlayerPrepareTalkState : PlayerBaseState
 
         if (Vector3.Angle(ctx.MainCamera.transform.forward, targetDirection) < 1.0f)
         {
-            isStateComplete = true;
+            ctx.ReadyToTalk = true;
             Quaternion cameraRotation = ctx.MainCamera.transform.localRotation;
             ctx.MainCamera.transform.localRotation = Quaternion.Euler(cameraRotation.x, 0.0f, 0.0f);
         }

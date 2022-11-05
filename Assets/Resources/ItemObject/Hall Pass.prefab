@@ -113,7 +113,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Hall Pass
   description: Maybe the Hall Monitor would like to see this
-  sprite: {fileID: 21300000, guid: c57d873eee2201d45b6584fc5abaad65, type: 3}
+  sprite: {fileID: 21300000, guid: 0904e4d27839a8046af5a62cd587a86e, type: 3}
+  questName: Fetch Hall Pass
+  questProgressDescription: Talk to the Hall monitor
+  questFetchDescription: 
+  itemNeededNames: []
 --- !u!114 &1437800523352641383
 MonoBehaviour:
   m_ObjectHideFlags: 0

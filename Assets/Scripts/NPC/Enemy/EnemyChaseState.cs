@@ -12,6 +12,7 @@ public class EnemyChaseState : EnemyBaseState
     private bool playerLost;
     private float hitCooldown;
     private float playerMissingCooldown;
+    private float damage = 25.0f;
 
     public override void EnterState()
     {
@@ -92,7 +93,7 @@ public class EnemyChaseState : EnemyBaseState
             return false;
         }
 
-        ctx.PlayerController.Hit();
+        ctx.PlayerController.Hit(damage);
         hitCooldown = 1.0f;
         return true;
     }

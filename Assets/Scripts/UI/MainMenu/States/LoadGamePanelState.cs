@@ -53,7 +53,6 @@ public class LoadGamePanelState : MainMenuBaseState
         saveObjects = new List<SaveFilePrefab>();
         for (int i = 0; i < dirs.Length; i++)
         {
-            Debug.Log(dirs[i].Name);
             FileInfo[] file = dirs[i].GetFiles("Save.json");
 
             if (file.Length < 1)
@@ -69,7 +68,6 @@ public class LoadGamePanelState : MainMenuBaseState
             Button button = saveFilePanel.GetComponent<Button>();
             int index = i;
             button.onClick.AddListener(delegate { ButtonSelectionOnClick(index); });
-            Debug.Log(i);
             saveObjects.Add(saveFilePanel.GetComponent<SaveFilePrefab>());
         }
     }
@@ -117,8 +115,6 @@ public class LoadGamePanelState : MainMenuBaseState
 
     private void ButtonSelectionOnClick(int index)
     {
-        Debug.Log("index: " + index);
-        Debug.Log("Open SaveGame :" + saveObjects[index].GetName());
         string saveName = saveObjects[index].GetName();
         selection = index;
         loadGameButton.GetComponent<Button>().interactable = true;

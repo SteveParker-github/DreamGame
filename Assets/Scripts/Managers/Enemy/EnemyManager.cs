@@ -7,6 +7,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Vector3[] locations;
     [SerializeField] private GameObject prefabs;
     [SerializeField] private string questName;
+    [SerializeField] private string questProgressDescription;
+    [SerializeField] private string questContinueDescription;
     [SerializeField] private string itemName;
     [SerializeField] private string itemDescription;
     private bool isSpawned;
@@ -65,8 +67,14 @@ public class EnemyManager : MonoBehaviour
         enemies.Remove(enemyName);
         enemiesManager.SetDead(sceneName, enemyName);
 
-        if (enemies.Count > 0) return;
+        if (enemies.Count > 0)
+        {
+            string questDescription = questContinueDescription + " (" + (3 - enemies.Count) + "/3)";
+            playerController.QuestManager.UpdateQuestDescription(questName, questDescription);
+            return;
+        } 
 
+        playerController.QuestManager.UpdateQuestDescription(questName, questProgressDescription);
         playerController.InventoryManager.AddNewItem((itemName, itemDescription));
     }
 
@@ -82,6 +90,10 @@ public class EnemyManager : MonoBehaviour
                 enemy.name = item.enemyName;
                 enemy.GetComponent<EnemyController>().SetEnemy(item);
                 enemies.Add(enemy.name, enemy);
+            }
+            else
+            {
+                playerController.DreamCatcher.LightUpCrystal();
             }
         }
     }

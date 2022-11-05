@@ -27,6 +27,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject questMenu;
     [Tooltip("GameObject of the QuestContent")]
     [SerializeField] private GameObject questContentObject;
+    [SerializeField] private GameObject titleHeader;
+    private TextMeshProUGUI backTitle;
 
     private QuestManager questManager;
     private List<GameObject> itemHolders;
@@ -47,6 +49,7 @@ public class InventoryManager : MonoBehaviour
     private Vector2 mouseItemLookInput;
     private bool isMouseLeftClickInput;
     private bool isNextTabInput;
+    private UIManager uiManager;
 
     private bool isFinished;
 
@@ -55,6 +58,8 @@ public class InventoryManager : MonoBehaviour
     public GameObject InventoryMenu { get => inventoryMenu; }
     public GameObject QuestMenu { get => questMenu; }
     public GameObject QuestContentObject { get => questContentObject; }
+    public GameObject TitleHeader { get => titleHeader; }
+    public TextMeshProUGUI BackTitle { get => backTitle; }
 
     public QuestManager QuestManager { get => questManager; }
 
@@ -76,12 +81,15 @@ public class InventoryManager : MonoBehaviour
     {
         controls = new Controls();
 
-        questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
+        questManager = FindObjectOfType<QuestManager>();
+        uiManager = FindObjectOfType<UIManager>();
 
         itemHolders = new List<GameObject>();
         items = new Dictionary<string, Item>();
         itemsHad = new List<string>();
         isFinished = false;
+
+        backTitle = transform.GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
 
         states = new MenuStateFactory(this);
         currentState = states.MenuIdleState();
@@ -160,7 +168,8 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(GameObject itemObject, Clue clue)
     {
-        items.Add(clue.ObjectName, new Item(clue.ObjectName, clue.Description, itemObject, clue.Sprite));
+        Item newItem = new Item(clue.ObjectName, clue.Description, itemObject, clue.Sprite);
+        items.Add(clue.ObjectName, newItem);
         itemsHad.Add(clue.ObjectName);
         Transform itemLocation = itemCamera.transform.Find("ItemLocation");
         itemObject.transform.SetPositionAndRotation(itemLocation.position, itemLocation.rotation);
@@ -169,6 +178,10 @@ public class InventoryManager : MonoBehaviour
         itemObject.transform.localPosition = new Vector3(0, 0, itemInfo.zoomLevel);
         itemObject.transform.localRotation = Quaternion.Euler(itemInfo.localRotation);
         itemObject.SetActive(false);
+
+        selectedItem = newItem;
+        selectedObject = itemObject;
+        uiManager.ShowItemViewer();
     }
 
     private void Update()
@@ -264,7 +277,6 @@ public class InventoryManager : MonoBehaviour
 
     public void AddNewItem((string, string) item)
     {
-        print("Hello");
         GameObject itemObject = Instantiate(Resources.Load<GameObject>("ItemObject/" + item.Item1));
         itemObject.name = item.Item1;
         Transform itemLocation = itemCamera.transform.Find("ItemLocation");
@@ -279,6 +291,17 @@ public class InventoryManager : MonoBehaviour
             Resources.Load<Sprite>("Sprite/" + item.Item1));
         items.Add(item.Item1, newItem);
         itemsHad.Add(item.Item1);
+    }
+
+    public void ShowItemDetail()
+    {
+        DisplayItems();
+        // isFinished = false;
+        currentState.ExitState();
+        currentState = states.MenuItemDetailState();
+        currentState.EnterState();
+        // isInventoryMenuInput = false;
+        // ToggleInventoryMenu();
     }
 
     #region Controls

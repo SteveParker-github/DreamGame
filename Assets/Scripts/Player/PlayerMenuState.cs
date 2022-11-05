@@ -12,7 +12,16 @@ public class PlayerMenuState : PlayerBaseState
     {
         ctx.IsPaused = true;
         ctx.GameManager.IsPaused = true;
-        ctx.InventoryManager.DisplayItems();
+        ctx.UIManager.ToggleQuestTracker();
+        if (ctx.UIManager.IsItemViewActive())
+        {
+            ctx.InventoryManager.ShowItemDetail();
+        }
+        else
+        {
+            ctx.InventoryManager.DisplayItems();
+        }
+        ctx.AmbientSound.Pause();
     }
     public override void UpdateState()
     {
@@ -21,7 +30,9 @@ public class PlayerMenuState : PlayerBaseState
     public override void ExitState()
     {
         ctx.IsPaused = false;
+        ctx.UIManager.ToggleQuestTracker();
         ctx.GameManager.IsPaused = false;
+        ctx.AmbientSound.UnPause();
     }
     public override void CheckSwitchState()
     {

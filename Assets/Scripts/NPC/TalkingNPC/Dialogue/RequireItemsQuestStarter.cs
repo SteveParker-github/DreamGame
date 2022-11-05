@@ -6,8 +6,8 @@ public class RequireItemsQuestStarter : QuestStarter
 {
     private string[] items;
     private PlayerController playerController;
-    public RequireItemsQuestStarter(string option, string respond, bool isEnd, string questName, QuestManager questManager, string[] items, PlayerController playerController)
-    : base(option, respond, isEnd, questName, questManager)
+    public RequireItemsQuestStarter(string option, string respond, bool isEnd, (string, string) quest, QuestManager questManager, string[] items, PlayerController playerController)
+    : base(option, respond, isEnd, quest, questManager)
     {
         this.items = items;
         this.playerController = playerController;
@@ -15,7 +15,7 @@ public class RequireItemsQuestStarter : QuestStarter
 
     public override bool IsAvailable()
     {
-        if (questManager.QuestExist(questName))
+        if (questManager.QuestExist(quest.Item1))
         {
             return false;
         }

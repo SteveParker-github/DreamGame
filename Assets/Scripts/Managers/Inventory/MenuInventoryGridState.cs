@@ -14,11 +14,13 @@ public class MenuInventoryGridState : MenuBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Enter Inv Grid system");
+        ctx.BackTitle.text = "[I] Back to Game";
+        ctx.IsInventoryMenuInput = false;
         ctx.ToggleScrollView();
         selection = 0;
         navCooldown = 0;
         ToggleSelectionborder(selection);
+        ctx.TitleHeader.SetActive(true);
     }
     public override void UpdateState()
     {
@@ -51,9 +53,9 @@ public class MenuInventoryGridState : MenuBaseState
             return;
         }
 
-        if (ctx.IsBackInput)
+        if (ctx.IsInventoryMenuInput)
         {
-            ctx.IsBackInput = false;
+            ctx.IsInventoryMenuInput = false;
             SwitchState(factory.MenuIdleState());
             return;
         }

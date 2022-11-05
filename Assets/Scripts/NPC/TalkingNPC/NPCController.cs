@@ -20,6 +20,7 @@ public class NPCController : MonoBehaviour, IInteractable
     private NPCStateFactory states;
 
     private bool enterTalkState = false;
+    private bool readyToTalk = false;
 
     public string CharacterName { get => characterName; }
     public DialogueController DialogueController { get => dialogueController; }
@@ -30,6 +31,7 @@ public class NPCController : MonoBehaviour, IInteractable
     public PlayerController PlayerController { get => playerController; }
     public NPCBaseState CurrentState { get => currentState; set => currentState = value; }
     public bool EnterTalkState { get => enterTalkState; set => enterTalkState = value; }
+    public bool ReadyToTalk { get => readyToTalk; set => readyToTalk = value; }
 
 
     private void Start()
@@ -48,6 +50,7 @@ public class NPCController : MonoBehaviour, IInteractable
     public void Interact()
     {
         playerController.TargetPosition = head.transform.position;
+        playerController.SelectedNPC = this;
         playerController.IsTalkState = true;
         enterTalkState = true;
     }
@@ -61,4 +64,7 @@ public class NPCController : MonoBehaviour, IInteractable
     {
         currentState.UpdateState();
     }
+
+    public void Deselect()
+    { }
 }

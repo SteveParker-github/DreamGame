@@ -16,7 +16,6 @@ public class NPCTalkingState : NPCBaseState
         conversations = new Dictionary<string, Conversation>();
 
         NewOptions();
-        ctx.PlayerController.UIManager.ChangeCaption("Hello Player", false);
     }
 
     public override void UpdateState()

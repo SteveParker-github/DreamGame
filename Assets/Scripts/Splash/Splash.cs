@@ -20,7 +20,6 @@ public class Splash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(globalScene.progress);
         if (globalScene.progress >= 0.90f && mainMenuScene.progress >= 0.90f)
         {
             globalScene.allowSceneActivation = true;

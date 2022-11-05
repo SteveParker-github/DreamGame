@@ -14,6 +14,8 @@ public class PlayerMainMenuState : PlayerBaseState
     {
         ctx.IsPaused = true;
         ctx.GameManager.IsPaused = true;
+        ctx.UIManager.ToggleQuestTracker();
+        ctx.AmbientSound.Pause();
         if (!SceneManager.GetSceneByName("MainMenuScene").isLoaded)
         {
             SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Additive);
@@ -32,6 +34,8 @@ public class PlayerMainMenuState : PlayerBaseState
     {
         ctx.IsPaused = false;
         ctx.GameManager.IsPaused = false;
+        ctx.UIManager.ToggleQuestTracker();
+        ctx.AmbientSound.UnPause();
         
         if (SceneManager.GetSceneByName("MainMenuScene").isLoaded)
         {

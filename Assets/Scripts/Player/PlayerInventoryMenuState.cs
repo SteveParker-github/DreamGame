@@ -13,7 +13,6 @@ public class PlayerInventoryMenuState : PlayerBaseState
         ctx.IsPaused = true;
         ctx.InventoryManager.ToggleInventoryMenu();
         ctx.InventoryManager.DisplayItems();
-        Debug.Log("Player is in the inventory menu");
     }
     public override void UpdateState()
     {

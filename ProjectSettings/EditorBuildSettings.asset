@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/GlobalScene.unity
     guid: 88b4cade6f175ee4ca570390b7b56a57
   - enabled: 1
+    path: Assets/Scenes/OpeningCutscene.unity
+    guid: b9af139f2d808814f99541960b244ba3
+  - enabled: 1
+    path: Assets/Scenes/HouseHubScene.unity
+    guid: 4d8208e29e82e8b42bd71f5c2bc13499
+  - enabled: 1
     path: Assets/Scenes/TestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
@@ -23,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BillyDreamScene.unity
     guid: 9ee13dc93eeafae4aab9f4b08fccaf5d
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: 18719d0775698d0418da41e376bb38d8
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2dc68afaab2953b4098dc0a6b58cde46,
       type: 2}

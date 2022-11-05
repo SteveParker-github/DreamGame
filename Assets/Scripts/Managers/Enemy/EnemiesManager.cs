@@ -85,7 +85,9 @@ public class EnemiesManager : MonoBehaviour
 
     public void GetLatestSceneEnemies()
     {
-        EnemyManager enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
+        EnemyManager enemyManager = FindObjectOfType<EnemyManager>();
+        if (enemyManager == null) return;
+        
         string sceneName = enemyManager.SceneName;
         Dictionary<string, GameObject> enemies = enemyManager.Enemies;
 

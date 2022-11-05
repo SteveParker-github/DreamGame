@@ -6,6 +6,7 @@ public class QuestManager : MonoBehaviour
 {
 
     private Dictionary<string, Quest> quests;
+    private string currentQuest;
     private void Awake()
     {
         quests = new Dictionary<string, Quest>();
@@ -14,6 +15,11 @@ public class QuestManager : MonoBehaviour
     public void NewQuest(string questName, Quest newQuest)
     {
         quests.Add(questName, newQuest);
+        if (questName == "Kill Billy's monsters")
+        {
+            GameObject.Find("ClockTower").GetComponent<AudioSource>().Play();
+        }
+        currentQuest = questName;
     }
 
     public bool QuestExist(string questName)
@@ -23,33 +29,28 @@ public class QuestManager : MonoBehaviour
 
     public bool QuestMatchStatus(string questName, string status)
     {
-        bool result = false;
+        if (!QuestExist(questName)) return false;
 
-        if (QuestExist(questName))
-        {
-            result = quests[questName].Status == status;
-        }
-
-        return result;
+        return quests[questName].Status == status;
     }
 
     public void UpdateQuestStatus(string questName, string newStatus)
     {
-        if(!QuestExist(questName)) return;
+        if (!QuestExist(questName)) return;
 
         quests[questName].Status = newStatus;
     }
 
-    public List<(string, string)> GetBasicQuestList()
+    public void UpdateQuestDescription(string questName, string description)
     {
-        List<(string, string)> questList = new List<(string, string)>();
+        if (!QuestExist(questName)) return;
 
-        foreach (KeyValuePair<string, Quest> item in quests)
-        {
-            questList.Add((item.Value.QuestName, item.Value.Status));
-        }
-        
-        return questList;
+        quests[questName].Description = description;
+    }
+
+    public List<Quest> GetBasicQuestList()
+    {
+        return new List<Quest>(quests.Values);
     }
 
     public bool QuestInProgress(string questName)
@@ -61,9 +62,15 @@ public class QuestManager : MonoBehaviour
 
     public void FinishQuest(string questName)
     {
-       if (!QuestExist(questName)) return;
+        if (!QuestExist(questName)) return;
 
-       quests[questName].Status = "Complete"; 
+        quests[questName].Description = "";
+        quests[questName].Status = "Complete";
+
+        if (currentQuest == questName)
+        {
+            GetNewCurrentQuest();
+        }
     }
 
     // provides all the information for the save game
@@ -73,20 +80,53 @@ public class QuestManager : MonoBehaviour
 
         foreach (KeyValuePair<string, Quest> item in quests)
         {
-            questList.Add(new QuestSave(item.Value.QuestName, item.Value.Status));
+            questList.Add(new QuestSave(item.Value.QuestName, item.Value.Status, item.Value.Description));
         }
 
         return questList.ToArray();
     }
 
-    public void LoadQuests(QuestSave[] newQuests)
+    public string GetCurrentQuest()
+    {
+        return currentQuest;
+    }
+
+    public (string, string) GetCurrentQuestInfo()
+    {
+        if (currentQuest == null || !QuestExist(currentQuest)) return ("", "");
+
+        return (quests[currentQuest].QuestName, quests[currentQuest].Description);
+    }
+
+    public void newCurrentQuest(string questName)
+    {
+        currentQuest = questName;
+    }
+
+    private void GetNewCurrentQuest()
+    {
+        foreach (KeyValuePair<string, Quest> item in quests)
+        {
+            if (item.Value.Status == "InProgress")
+            {
+                currentQuest = item.Key;
+                return;
+            }
+        }
+
+        currentQuest = "";
+    }
+
+    public void LoadQuests(QuestSave[] newQuests, string currentQuest)
     {
         quests = new Dictionary<string, Quest>();
 
         foreach (QuestSave quest in newQuests)
         {
-            quests.Add(quest.questName, new Quest(quest.questName));
+            quests.Add(quest.questName, new Quest(quest.questName, quest.description));
             quests[quest.questName].Status = quest.questProgress;
         }
+
+        this.currentQuest = currentQuest;
     }
 }

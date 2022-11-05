@@ -12,11 +12,13 @@ public class MenuItemDetailState : MenuBaseState
     private Quaternion defaultRotation;
     public override void EnterState()
     {
+        ctx.BackTitle.text = "[Escape] back to Inventory";
         ctx.ToggleItemDetail();
         ctx.DisplayItemDetail();
         itemGameObject = ctx.SelectedObject;
         itemGameObject.SetActive(true);
         defaultRotation = itemGameObject.transform.rotation;
+        ctx.TitleHeader.SetActive(false);
     }
     public override void UpdateState()
     {

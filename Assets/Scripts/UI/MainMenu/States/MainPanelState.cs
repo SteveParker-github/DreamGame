@@ -15,8 +15,10 @@ public class MainPanelState : MainMenuBaseState
     private GameObject loadButton;
     private GameObject resumeButton;
     private GameObject saveButton;
+    private GameObject controlsButton;
     private bool isLoadTriggered;
     private bool isSaveTriggered;
+    private bool isControlsTriggered;
     public override void EnterState()
     {
         ctx.MainPanel.SetActive(true);
@@ -27,12 +29,14 @@ public class MainPanelState : MainMenuBaseState
         loadButton = ctx.MainPanel.transform.Find("LoadButton").gameObject;
         resumeButton = ctx.MainPanel.transform.Find("ResumeButton").gameObject;
         saveButton = ctx.MainPanel.transform.Find("SaveButton").gameObject;
+        controlsButton = ctx.MainPanel.transform.Find("ControlsButton").gameObject;
 
         startButton.GetComponent<Button>().onClick.AddListener(StartGameOnClick);
         exitButton.GetComponent<Button>().onClick.AddListener(ExitGameOnClick);
         loadButton.GetComponent<Button>().onClick.AddListener(LoadGameOnClick);
         resumeButton.GetComponent<Button>().onClick.AddListener(ResumeGameOnClick);
         saveButton.GetComponent<Button>().onClick.AddListener(SaveGameOnClick);
+        controlsButton.GetComponent<Button>().onClick.AddListener(ControlsOnClick);
     }
     public override void UpdateState()
     {
@@ -68,21 +72,20 @@ public class MainPanelState : MainMenuBaseState
             SwitchState(factory.SaveGamePanelState());
             return;
         }
+
+        if (isControlsTriggered)
+        {
+            SwitchState(factory.ControlsPanelState());
+            return;
+        }
     }
 
     private void StartGameOnClick()
     {
-        string levelName = "BillyDreamScene";
-
-        if (ctx.IsDevMode)
-        {
-            levelName = "TestScene";
-        }
-
-        SceneManager.LoadScene(levelName, LoadSceneMode.Additive);
-        GameObject.Find("Player").GetComponent<PlayerController>().CurrentState.CheckSwitchState();
+        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+        
+        gameManager.StartGame();
         SceneManager.UnloadSceneAsync("MainMenuScene");
-        Debug.Log("hello");
     }
 
     private void ExitGameOnClick()
@@ -108,5 +111,10 @@ public class MainPanelState : MainMenuBaseState
     private void SaveGameOnClick()
     {
         isSaveTriggered = true;
+    }
+
+    private void ControlsOnClick()
+    {
+        isControlsTriggered = true;
     }
 }

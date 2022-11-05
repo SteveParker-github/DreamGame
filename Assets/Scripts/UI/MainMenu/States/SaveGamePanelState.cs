@@ -108,7 +108,6 @@ public class SaveGamePanelState : MainMenuBaseState
 
         for (int i = 0; i < dirs.Length; i++)
         {
-            Debug.Log(dirs[i].Name);
             if (dirs[i].Name == "QuickSave") continue;
 
             FileInfo[] file = dirs[i].GetFiles("Save.json");
@@ -126,7 +125,6 @@ public class SaveGamePanelState : MainMenuBaseState
             Button button = saveFilePanel.GetComponent<Button>();
             string saveName = dirs[i].Name;
             button.onClick.AddListener(delegate { ButtonSelectionOnClick(saveName); });
-            Debug.Log(i);
             saveObjects.Add(saveFilePanel.GetComponent<SaveFilePrefab>());
         }
     }

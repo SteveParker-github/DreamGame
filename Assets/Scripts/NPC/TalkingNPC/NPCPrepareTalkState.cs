@@ -9,15 +9,19 @@ public class NPCPrepareTalkState : NPCBaseState
     { }
 
     private const float MAXROTATIONSPEED = 2.0f;
-    private bool isStateComplete;
 
     public override void EnterState()
     {
+        ctx.ReadyToTalk = false;
     }
 
     public override void UpdateState()
     {
-        RotateTowardsNPC();
+        if (!ctx.ReadyToTalk)
+        {
+            RotateTowardsNPC();
+        }
+
         CheckSwitchState();
     }
 
@@ -27,7 +31,7 @@ public class NPCPrepareTalkState : NPCBaseState
 
     public override void CheckSwitchState()
     {
-        if (isStateComplete)
+        if (ctx.ReadyToTalk)
         {
             SwitchState(factory.NPCTalkingState());
         }
@@ -46,7 +50,7 @@ public class NPCPrepareTalkState : NPCBaseState
 
         if (Vector3.Angle(ctx.transform.forward, targetDirection) < 1.0f)
         {
-            isStateComplete = true;
+            ctx.ReadyToTalk = true;
         }
     }
 }

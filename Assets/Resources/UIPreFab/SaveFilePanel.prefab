@@ -68,8 +68,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 09-09-2023 12:46:46
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 253aaf231453fc046a6ce5ed64e29908, type: 2}
+  m_sharedMaterial: {fileID: 2305412850271461046, guid: 253aaf231453fc046a6ce5ed64e29908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -279,8 +280,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Name of the saved file '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 253aaf231453fc046a6ce5ed64e29908, type: 2}
+  m_sharedMaterial: {fileID: 2305412850271461046, guid: 253aaf231453fc046a6ce5ed64e29908,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -460,10 +462,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.8078432, g: 0.76470596, b: 0.83921576, a: 1}
+    m_HighlightedColor: {r: 0.93725497, g: 0.854902, b: 0.9921569, a: 1}
+    m_PressedColor: {r: 0.57254905, g: 0.5137255, b: 0.6117647, a: 1}
+    m_SelectedColor: {r: 0.9294118, g: 0.8862746, b: 0.9607844, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

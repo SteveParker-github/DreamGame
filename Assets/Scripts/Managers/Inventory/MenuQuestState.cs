@@ -9,22 +9,22 @@ public class MenuQuestState : MenuBaseState
     : base(inventoryManager, menuStateFactory)
     { }
 
-    private List<(string, string)> questList;
+    private List<Quest> questList;
     private List<GameObject> quests;
     public override void EnterState()
     {
-        questList = new List<(string, string)>();
+        questList = new List<Quest>();
         quests = new List<GameObject>();
         ctx.ToggleInventoryMenu();
         ctx.QuestMenu.SetActive(true);
 
         questList = ctx.QuestManager.GetBasicQuestList();
 
-        foreach ((string, string) item in questList)
+        foreach (Quest item in questList)
         {
             GameObject newOption = GameObject.Instantiate(ctx.QuestPrefab);
             newOption.GetComponent<RectTransform>().localScale = Vector3.one;
-            newOption.GetComponent<QuestUI>().UpdateText(item.Item1, "need a descriptor", item.Item2);
+            newOption.GetComponent<QuestUI>().UpdateText(item.QuestName, item.Description, item.Status);
             newOption.transform.SetParent(ctx.QuestContentObject.transform);
             quests.Add(newOption);
         }

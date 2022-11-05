@@ -20,4 +20,9 @@ public class MainMenuStateFactory
     {
         return new SaveGamePanelState(context, this);
     }
+
+    public MainMenuBaseState ControlsPanelState()
+    {
+        return new ControlsPanelState(context, this);
+    }
 }

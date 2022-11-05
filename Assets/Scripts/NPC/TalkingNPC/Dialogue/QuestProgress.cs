@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class QuestProgress : QuestStarter
 {
-    protected string itemName;
+    protected string[] items;
     protected InventoryManager inventoryManager;
 
-    public QuestProgress(string option, string respond, bool isEnd, string questName, QuestManager questManager, string itemName, InventoryManager inventoryManager)
-    : base(option, respond, isEnd, questName, questManager)
+    public QuestProgress(string option, string respond, bool isEnd, (string, string) quest, QuestManager questManager, string[] items, InventoryManager inventoryManager)
+    : base(option, respond, isEnd, quest, questManager)
     {
-        this.itemName = itemName;
+        this.items = items;
         this.inventoryManager = inventoryManager;
     }
 
@@ -22,7 +22,16 @@ public class QuestProgress : QuestStarter
 
     public override bool IsAvailable()
     {
-        bool result = questManager.QuestInProgress(questName) && !inventoryManager.InPossesion(itemName);
-        return result;
+        if (!questManager.QuestInProgress(quest.Item1)) return false;
+
+        foreach (string item in items)
+        {
+            if (!inventoryManager.Exist(item))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

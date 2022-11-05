@@ -26,7 +26,7 @@ public class PlayerWalkingState : PlayerBaseState
     private bool isAbsorbing;
     private float shootingCooldown;
     private float savingCooldown;
-    private DreamCatcher dreamCatcher;
+    private IInteractable currentSelection;
 
     public override void EnterState()
     {
@@ -37,12 +37,14 @@ public class PlayerWalkingState : PlayerBaseState
         isAbsorbing = false;
         shootingCooldown = 0;
         savingCooldown = 0;
-        // dreamCatcher = GameObject.Find("DreamCatcher").GetComponent<DreamCatcher>();
-        dreamCatcher = GameObject.FindObjectOfType<DreamCatcher>();
+        ctx.IsMainMenuInput = false;
+        ctx.IsInventoryMenuInput = false;
     }
 
     public override void UpdateState()
     {
+        if (ctx.IsPaused) return;
+        
         Save();
         Load();
         MovePlayer();
@@ -55,6 +57,9 @@ public class PlayerWalkingState : PlayerBaseState
 
     public override void ExitState()
     {
+        ctx.FootStepSource.Stop();
+        ctx.Animator.SetFloat(ctx.MovementXHash, 0);
+        ctx.Animator.SetFloat(ctx.MovementYHash, 0);
         Cursor.lockState = CursorLockMode.Confined;
         ctx.UIManager.ToggleCrosshair();
     }
@@ -95,8 +100,21 @@ public class PlayerWalkingState : PlayerBaseState
         if (ctx.MoveInput != Vector2.zero)
         {
             inputDirection = ctx.transform.right * ctx.MoveInput.x + ctx.transform.forward * ctx.MoveInput.y;
+            if (!ctx.FootStepSource.isPlaying)
+            {
+                ctx.FootStepSource.Play();
+            }
+        }
+        else
+        {
+            if (ctx.FootStepSource.isPlaying)
+            {
+                ctx.FootStepSource.Stop();
+            }
         }
 
+        ctx.Animator.SetFloat(ctx.MovementXHash, ctx.MoveInput.x);
+        ctx.Animator.SetFloat(ctx.MovementYHash, ctx.MoveInput.y);
         ctx.CharacterController.Move(inputDirection.normalized * (moveSpeed * Time.deltaTime) + new Vector3(0.0f, -9.81f * Time.deltaTime, 0.0f));
     }
 
@@ -131,11 +149,15 @@ public class PlayerWalkingState : PlayerBaseState
             //enable the ability to pick up item, notify the user they can pick up this item.
             Debug.DrawRay(ctx.MainCamera.transform.position, ctx.MainCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
 
-            var interactable = hit.collider.gameObject.GetComponent<IInteractable>();
+            IInteractable interactable = hit.collider.gameObject.GetComponent<IInteractable>();
 
-            if (interactable == null) return;
+            if (interactable == null)
+            {
+                return;
+            }
 
             ctx.InfoText.text = interactable.Message();
+            currentSelection = interactable;
 
             if (ctx.IsInteractInput)
             {
@@ -149,6 +171,10 @@ public class PlayerWalkingState : PlayerBaseState
             //disable the ability to pick up item. Turn off the notice to pick up the item.
             Debug.DrawRay(ctx.MainCamera.transform.position, ctx.MainCamera.transform.TransformDirection(Vector3.forward) * 2, Color.white);
             ctx.InfoText.text = "";
+            if (currentSelection == null) return;
+
+            currentSelection.Deselect();
+            currentSelection = null;
         }
     }
 
@@ -156,7 +182,7 @@ public class PlayerWalkingState : PlayerBaseState
     {
         if (!isAbsorbing && !isShooting)
         {
-            dreamCatcher.RotateToDefault();
+            ctx.DreamCatcher.RotateToDefault();
         }
 
         Absorbing();
@@ -185,7 +211,11 @@ public class PlayerWalkingState : PlayerBaseState
     {
         isAbsorbing = !isShooting && ctx.IsAbsorbInput;
 
-        if (!isAbsorbing) return;
+        if (!isAbsorbing)
+        {
+            ctx.DreamCatcher.StopAbsorbing();
+            return;
+        }
 
         HitTarget(4.0f);
     }
@@ -206,17 +236,22 @@ public class PlayerWalkingState : PlayerBaseState
             if (target == null) return;
 
             //rotate the dreamcatcher to the target
-            dreamCatcher.RotateToTarget(hit.transform.position);
+            ctx.DreamCatcher.RotateToTarget(hit.transform.position);
 
             if (isAbsorbing)
             {
-                string canAbsorb = target.Absorb(1.0f) ? "hit" : "block";
-                dreamCatcher.ChangeColour(canAbsorb, target.RemainingAbsorb());
+                ctx.DreamCatcher.StartAbsorbing();
+
+                if (target.Absorb(1.0f))
+                {
+                    ctx.DreamCatcher.LightUpCrystal();
+                }
+
                 return;
             }
 
             //fire projectile at target
-            dreamCatcher.FireProjectile();
+            ctx.DreamCatcher.FireProjectile();
 
             target.StunDamage(30.0f);
         }

@@ -16,8 +16,20 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private PlayerBaseState currentState;
     private PlayerStateFactory states;
-
     private GameObject mainCamera;
+    [SerializeField] private AudioSource footStepSource;
+    public AudioSource FootStepSource { get => footStepSource; }
+    [SerializeField] private AudioSource ambientSound;
+    public AudioSource AmbientSound { get => ambientSound; }
+
+    #region Animation
+    private Animator animator;
+    private readonly int movementXHash = Animator.StringToHash("MovementX");
+    private readonly int movementYHash = Animator.StringToHash("MovementY");
+    public Animator Animator { get => animator; set => animator = value; }
+    public int MovementXHash { get => movementXHash; }
+    public int MovementYHash { get => movementYHash; }
+    #endregion
 
     #region controls
     private Controls controls;
@@ -48,14 +60,17 @@ public class PlayerController : MonoBehaviour
     private int optionLocation;
     private string message;
     private bool isPaused;
+    private bool readyToTalk;
 
     private InventoryManager inventoryManager;
     private QuestManager questManager;
+    private DreamCatcher dreamCatcher;
 
     private float suspicionHealth = 0;
     private float damageHealth = 0;
     private int dialogueFails = 0;
     private float maxSuspicionHealth = 400;
+    private float recoveryCooldown;
 
     public TextMeshProUGUI InfoText { get => infoText; }
     public GameManager GameManager { get => gameManager; }
@@ -65,13 +80,16 @@ public class PlayerController : MonoBehaviour
     public GameObject MainCamera { get => mainCamera; }
     public bool IsTalkState { get => isTalkState; set => isTalkState = value; }
     public Vector3 TargetPosition { get => targetPosition; set => targetPosition = value; }
-    public NPCController SelectedNPC { get => selectedNPC; }
+    public NPCController SelectedNPC { get => selectedNPC; set => selectedNPC = value; }
     public int OptionLocation { get => optionLocation; set => optionLocation = value; }
     public string Message { get => message; set => message = value; }
     public bool IsPaused { get => isPaused; set => isPaused = value; }
+    public bool ReadyToTalk { get => readyToTalk; set => readyToTalk = value; }
     public InventoryManager InventoryManager { get => inventoryManager; }
     public QuestManager QuestManager { get => questManager; }
+    public DreamCatcher DreamCatcher { get => dreamCatcher; }
     public float SuspicionHealth { get => suspicionHealth; }
+    public float DamageHealth { get => damageHealth; set => damageHealth = value; }
     public int DialogueFails { get => dialogueFails; set => dialogueFails = value; }
 
     void Awake()
@@ -79,6 +97,7 @@ public class PlayerController : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         questManager = GameObject.Find("QuestManager").GetComponent<QuestManager>();
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
 
         uIManager = GameObject.Find("HUD").GetComponent<UIManager>();
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
@@ -93,7 +112,7 @@ public class PlayerController : MonoBehaviour
 
         states = new PlayerStateFactory(this);
         currentState = states.PlayerMainMenuState();
-
+        dreamCatcher = GameObject.FindObjectOfType<DreamCatcher>();
         SetupControls();
     }
 
@@ -112,36 +131,58 @@ public class PlayerController : MonoBehaviour
 
         if (isPaused) return;
 
+        if (recoveryCooldown > 0.0f)
+        {
+            recoveryCooldown -= Time.deltaTime;
+        }
+        else
+        {
+            float reduceDamageHealth = (Time.deltaTime * 2.0f);
+            damageHealth -= Mathf.Min(damageHealth, reduceDamageHealth);
+        }
+
+        suspicionHealth = damageHealth + dialogueFails * 100;
+
         if (suspicionHealth >= maxSuspicionHealth)
         {
+            string sceneName = "";
+            currentState.ExitState();
             currentState = states.PlayerWalkingState();
             currentState.EnterState();
+
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                string sceneName = SceneManager.GetSceneAt(i).name;
+                sceneName = SceneManager.GetSceneAt(i).name;
 
                 if (sceneName != "GlobalScene" && sceneName != "MainMenuScene")
                 {
                     SceneManager.UnloadSceneAsync(sceneName);
                 }
             }
-            SceneManager.LoadScene("TestScene", LoadSceneMode.Additive);
-            transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 0, 0));
+
+            gameManager.TravelBack(sceneName);
+            dreamCatcher.ResetCrystals();
+            isTalkState = false;
+
             dialogueFails = 0;
             damageHealth = 0;
             suspicionHealth = 0;
             return;
         }
-
-        float reduceDamageHealth = (Time.deltaTime * 2.0f);
-        damageHealth -= Mathf.Min(damageHealth, reduceDamageHealth);
-        suspicionHealth = damageHealth + dialogueFails * 100;
     }
 
-    public void Hit()
+    public void Hit(float damage)
     {
-        damageHealth += 25;
+        damageHealth += damage;
         suspicionHealth = damageHealth + dialogueFails * 100;
+
+        recoveryCooldown = 5.0f;
+    }
+
+    public void ResetSuspicion()
+    {
+        dialogueFails = 0;
+        damageHealth = 0;
     }
 
     #region  Controller

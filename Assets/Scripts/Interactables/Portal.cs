@@ -14,9 +14,15 @@ public class Portal : MonoBehaviour, IInteractable
 
     private GameManager gameManager;
 
-    private void start()
+    private void Awake()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (loadLevel == "HouseHubScene")
+        {
+            Destroy(this);
+            return;
+        }
+
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     public void Interact()
@@ -25,18 +31,18 @@ public class Portal : MonoBehaviour, IInteractable
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             string testName = SceneManager.GetSceneAt(i).name;
-            print(testName);
+
             if (testName != "GlobalScene" && testName != "MainMenuScene")
             {
                 unloadLevel = testName;
             }
-            gameManager.NewPlayerlocation(position, rotation);
         }
 
         try
         {
+            gameManager.TravelToScene(loadLevel, position, rotation);
             SceneManager.UnloadSceneAsync(unloadLevel);
-            SceneManager.LoadScene(loadLevel, LoadSceneMode.Additive);
+            // SceneManager.LoadScene(loadLevel, LoadSceneMode.Additive);
         }
         catch (Exception e)
         {
@@ -49,4 +55,7 @@ public class Portal : MonoBehaviour, IInteractable
     {
         return "Enter portal";
     }
+
+    public void Deselect()
+    { }
 }

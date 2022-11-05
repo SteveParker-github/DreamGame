@@ -2,6 +2,7 @@
 public class SaveFile
 {
     public QuestSave[] quests;
+    public string currentQuest;
     public InventorySave inventory;
     public DialogueSave dialogue;
     public string location;

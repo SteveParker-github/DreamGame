@@ -24,36 +24,69 @@ public class UIManager : MonoBehaviour
     private bool isEnd;
     private PlayerController playerController;
     private GameObject suspicionMeter;
-    private float currentEyeLevel;
+    private GameObject itemViewer;
+    private SuspicionPrompt suspicionPrompt;
+    private int currentEyeLevel;
+    private QuestTracker questTracker;
+    private float loadingTimer;
     public int MaxOptions { get { return maxOptions; } }
+    public bool isLoading;
 
     // Start is called before the first frame update
     void Awake()
     {
-        crosshair = transform.Find("Crosshair").gameObject;
-        captionPanel = transform.Find("CaptionPanel").gameObject;
-        caption = captionPanel.transform.Find("Caption").gameObject;
+        crosshair = transform.GetChild(0).gameObject;
+        captionPanel = transform.GetChild(2).gameObject;
+        caption = captionPanel.transform.GetChild(0).gameObject;
         captionText = caption.GetComponent<TextMeshProUGUI>();
-        dialogueBox = transform.Find("DialogueBox").gameObject;
+        dialogueBox = transform.GetChild(1).gameObject;
         dialogueContent = dialogueBox.transform.Find("Viewport").Find("Content").gameObject;
         dialogueContentRT = dialogueContent.GetComponent<RectTransform>();
         dialogueScrollBar = dialogueBox.transform.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
-        suspicionMeter = transform.Find("SuspicionMeter").gameObject;
+        Transform suspicion = transform.GetChild(3);
+        suspicionMeter = suspicion.GetChild(0).gameObject;
+        suspicionPrompt = suspicion.GetComponent<SuspicionPrompt>();
+        itemViewer = transform.GetChild(5).gameObject;
+        itemViewer.SetActive(false);
         dialogueGameObjects = new List<GameObject>();
         dialogueBoxes = new List<GameObject>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         currentEyeLevel = 0;
+        questTracker = transform.GetChild(4).GetComponent<QuestTracker>();
+        isLoading = false;
+        loadingTimer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!suspicionMeter.activeSelf) return;
+        UpdateEyeLevel();
+    }
+
+    private void UpdateEyeLevel()
+    {
+        if (isLoading && loadingTimer == 0)
+        {
+            loadingTimer = 2.0f;
+            return;
+        }
+
+        if (loadingTimer > 0)
+        {
+            loadingTimer -= Time.deltaTime;
+        }
+        else
+        {
+            loadingTimer = 0;
+            isLoading = false;
+        }
 
         int eyeLevel = Mathf.FloorToInt(playerController.SuspicionHealth / 100);
         eyeLevel = Mathf.Clamp(eyeLevel, 0, 3);
-        
+
         if (eyeLevel == currentEyeLevel) return;
+
+        if (eyeLevel > currentEyeLevel && !isLoading) suspicionPrompt.ShowWarning(currentEyeLevel);
 
         suspicionMeter.GetComponent<RawImage>().texture = eyes[eyeLevel];
         currentEyeLevel = eyeLevel;
@@ -79,6 +112,12 @@ public class UIManager : MonoBehaviour
     public void ToggleDialogueBox()
     {
         dialogueBox.SetActive(!dialogueBox.activeSelf);
+        dialogueBox.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+    }
+
+    public void ToggleQuestTracker()
+    {
+        questTracker.ToggleTracker();
     }
 
     public void DialogOptions(Dictionary<string, bool> dialogueOptions)
@@ -88,39 +127,19 @@ public class UIManager : MonoBehaviour
         List<string> keys = new List<string>(dialogueOptions.Keys);
         maxOptions = dialogueOptions.Count;
 
-        dialogueContentRT.offsetMax = new Vector2(0, 50 * maxOptions);
-        dialogueContentRT.anchoredPosition = new Vector2(0, 25 * maxOptions);
-
         for (int i = 0; i < maxOptions; i++)
         {
-            GameObject newOptionBox = Instantiate(optionBox);
-            GameObject newOption = new GameObject("option" + i);
-            TextMeshProUGUI newOptionText = newOption.AddComponent<TextMeshProUGUI>();
-            newOptionText.text = keys[i];
-            
+            GameObject newOption = Instantiate(Resources.Load<GameObject>("UIPreFab/Option"), dialogueContent.transform);
+            Option option = newOption.GetComponent<Option>();
+            option.Setup(i, keys[i]);
+
             if (dialogueOptions[keys[i]])
             {
-                newOptionText.color = new Vector4(1, 1, 1, 0.5f);
+                option.GetComponent<TextMeshProUGUI>().color = new Vector4(1, 1, 1, 0.5f);
             }
 
-            newOptionBox.transform.SetParent(newOption.transform);
-            
-            RectTransform newOptionBoxRT = newOptionBox.GetComponent<RectTransform>();
-            newOptionBoxRT.offsetMin = new Vector2(-10, 0);
-            newOptionBoxRT.offsetMax = new Vector2(10, 0);
-            newOption.transform.SetParent(dialogueContent.transform);
-
-            RectTransform newOptionRT = newOption.GetComponent<RectTransform>();
-            newOptionRT.anchorMin = new Vector2(0, 1);
-            newOptionRT.anchorMax = new Vector2(1, 1);
-            newOptionRT.pivot = new Vector2(0.5f, 1);
-            newOptionRT.offsetMin = new Vector2(50, -50);
-            newOptionRT.offsetMax = new Vector2(-50, 0);
-            newOptionRT.anchoredPosition = new Vector2(newOptionRT.anchoredPosition.x, -50 * i);
-
             dialogueGameObjects.Add(newOption);
-            dialogueBoxes.Add(newOptionBox);
-            newOptionBox.SetActive(false);
+            dialogueBoxes.Add(newOption.transform.GetChild(0).gameObject);
         }
 
         dialogueBoxes[0].SetActive(true);
@@ -143,14 +162,29 @@ public class UIManager : MonoBehaviour
         dialogueBoxes.Clear();
     }
 
+    public void SuspicionMeterOn()
+    {
+        if (suspicionMeter.activeInHierarchy) return;
+
+        suspicionMeter.SetActive(true);
+    }
+
+    public void SuspicionMeterOff()
+    {
+        if (!suspicionMeter.activeInHierarchy) return;
+
+        suspicionMeter.SetActive(false);
+    }
+
     public void MoveOptionBox(int prevLocation, int newLocation)
     {
-        float multiplier = 0.3f;
         dialogueBoxes[prevLocation].SetActive(false);
         dialogueBoxes[newLocation].SetActive(true);
 
+        float multiplier = 1.0f / (maxOptions - 1);
         float movePosition = prevLocation < newLocation ? -1 : 1;
-        dialogueScrollBar.value += movePosition * multiplier;
+
+        dialogueBox.GetComponent<ScrollRect>().verticalNormalizedPosition += multiplier * movePosition;
     }
 
     public string GetMessage(int location)
@@ -164,5 +198,15 @@ public class UIManager : MonoBehaviour
     public bool IsEnd()
     {
         return isEnd;
+    }
+
+    public void ShowItemViewer()
+    {
+        itemViewer.SetActive(true);
+    }
+
+    public bool IsItemViewActive()
+    {
+        return itemViewer.activeInHierarchy;
     }
 }

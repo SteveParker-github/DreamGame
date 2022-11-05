@@ -8,6 +8,7 @@ public class MainMenuController : MonoBehaviour
     private GameObject mainPanel;
     private GameObject loadGamePanel;
     private GameObject saveGamePanel;
+    private GameObject controlsPanel;
     private MainMenuStateFactory states;
     private MainMenuBaseState currentState;
     private bool isMidGame = false;
@@ -16,6 +17,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject MainPanel { get => mainPanel; }
     public GameObject LoadGamePanel { get => loadGamePanel; }
     public GameObject SaveGamePanel { get => saveGamePanel; }
+    public GameObject ControlsPanel { get => controlsPanel; }
     public MainMenuBaseState CurrentState { get => currentState; set => currentState = value; }
     public bool IsMidGame { get => isMidGame; set => isMidGame = value; }
 
@@ -25,8 +27,10 @@ public class MainMenuController : MonoBehaviour
         mainPanel = transform.Find("MainPanel").gameObject;
         loadGamePanel = transform.Find("LoadGamePanel").gameObject;
         saveGamePanel = transform.Find("SaveGamePanel").gameObject;
+        controlsPanel = transform.Find("ControlsPanel").gameObject;
         loadGamePanel.SetActive(false);
         saveGamePanel.SetActive(false);
+        controlsPanel.SetActive(false);
 
         states = new MainMenuStateFactory(this);
         currentState = states.MainPanelState();

@@ -31,4 +31,7 @@ public class TrapNPCController : MonoBehaviour, IInteractable
     {
         return "Talk to " + characterName;
     }
+
+    public void Deselect()
+    { }
 }

@@ -11,6 +11,9 @@ public class EnemyController : MonoBehaviour, IHitable
     [SerializeField] private float viewRadius = 10.0f;
     [SerializeField] private float viewAngle = 90.0f;
     [SerializeField] private GameObject eyeLevel;
+    [SerializeField] private List<AudioClip> moanClips;
+    [SerializeField] private AudioClip deathClip;
+    private AudioSource audioSource;
     private Animator animator;
     private readonly int isMovingHash = Animator.StringToHash("IsMoving");
     private EnemyBaseState currentState;
@@ -48,6 +51,7 @@ public class EnemyController : MonoBehaviour, IHitable
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         GameObject player = GameObject.Find("Player");
         playerLocation = player.transform;
@@ -71,11 +75,13 @@ public class EnemyController : MonoBehaviour, IHitable
 
         if (playerController.GameManager.IsPaused)
         {
+            audioSource.Pause();
             hadPaused = true;
             agent.enabled = false;
             return;
         }
 
+        UpdateAudio();
         agent.enabled = true;
         animator.SetBool(isMovingHash, agent.velocity.magnitude > 0.1f);
         currentState.UpdateState();
@@ -88,6 +94,16 @@ public class EnemyController : MonoBehaviour, IHitable
         DetectPlayer();
     }
 
+    private void UpdateAudio()
+    {
+        audioSource.UnPause();
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = moanClips[Random.Range(0, moanClips.Count)];
+            audioSource.Play();
+        }
+    }
+
     public bool Absorb(float damageMultiplier)
     {
         if (!isStunned)
@@ -97,12 +113,26 @@ public class EnemyController : MonoBehaviour, IHitable
 
         absorbHealth -= Time.deltaTime * damageMultiplier;
 
+        float alpha = RemainingAbsorb() / 1.25f + 0.2f;
+        Renderer renderer = transform.GetChild(0).GetComponent<Renderer>();
+        Color colour = renderer.material.color;
+        colour.a = alpha;
+        renderer.material.color = colour; 
+
+        if (audioSource.clip != deathClip)
+        {
+            audioSource.clip = deathClip;
+            audioSource.Play();
+        }
+
         if (absorbHealth <= 0)
         {
             enemyManager.RemoveEnemy(this.gameObject.name);
             Destroy(gameObject);
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     public void StunDamage(float damage)
